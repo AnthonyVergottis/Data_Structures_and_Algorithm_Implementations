@@ -14,7 +14,7 @@ struct BinaryNode{
 	BinaryNode *right = nullptr;
 	BinaryNode *left = nullptr;
 
-	BinaryNode(T value): key{value}{}
+	BinaryNode(){}
 	// ~BinaryNode(){delete parent; delete right; delete left;}
 };
 
@@ -25,10 +25,11 @@ class BinarySearchTree{
 		int num_nodes = 0;
 	
 	public:
-		BinarySearchTree(): root{new BinaryNode<T>(0)}{}
-		~BinarySearchTree(){delete root;}
+		BinarySearchTree(){}
+		~BinarySearchTree(){}
 
-		void insert(BinaryNode<T> * node);
+
+		void insert( T key);
 
 		BinaryNode<T> * findMaximum(BinaryNode<T> * node) const;
 		BinaryNode<T> * findMinimum(BinaryNode<T> * node) const;
@@ -40,6 +41,8 @@ class BinarySearchTree{
 		int size(){
 			return num_nodes;
 		}
+
+		void printTree();
 
 
 };
@@ -56,56 +59,67 @@ BinaryNode<T> * BinarySearchTree<T>::findMinimum(BinaryNode<T> * node) const{
 }
 
 
+template <typename T> 
+void BinarySearchTree<T>::printTree(){
+
+
+}
 
 template <typename T> 
-void BinarySearchTree<T>::insert(BinaryNode<T> * node){
-	if (this->empty()){
-		root->key = node->key;
-		root->right = nullptr;
-		root->left = nullptr;
-		++num_nodes;
-		// cout << comp->key << endl;
-	} else {
-		if(node->key < root->key){
-			// MUST INCLUDE FIND OPERATORS HERE MIN-MAX
+void  BinarySearchTree<T>::insert(T key){
 
-			// root->right = node;
-			// node->parent = root;
-		}else if(node->key > root->key){
-			// MUST INCLUDE FIND OPERATORS HERE MIN-MAX
-
-
-			// root->left = node;
-			// node->parent = root;
-		}
-		
-	}
+	BinaryNode<T> *newNode = new BinaryNode<T>;
+	BinaryNode<T> *currentNode = new BinaryNode<T>;
 	
+	newNode->key = key;
+
+	if (this->empty()){
+		root = newNode;
+		++num_nodes;		
+		cout << root->key << endl;
+		return;
+	} else{
+		currentNode = root;
+		while(1){	
+			if(key < currentNode->key){
+				while(currentNode->left == nullptr){
+					currentNode->left = newNode;
+					newNode->parent = currentNode;
+					cout << "Added left" << endl;
+					
+				}
+				++num_nodes;
+				return;
+			}else if(key > currentNode->key){
+				while(currentNode->right == nullptr){
+					currentNode->right = newNode;
+					newNode->parent = currentNode;
+					cout << "Added rigth" << endl;
+				
+				}
+				++num_nodes;
+				return;
+			}
+		}
+
+
+
+	}
+
+
 }
 
 int main(int argc, char *argv[]){
 	BinarySearchTree<int> Tree;
 	
 
-	BinaryNode<int> *node1 = new BinaryNode<int>(35);
 
 
-	// BinaryNode<int> *node2= new BinaryNode<int>;
-	// node2->addValue(7);
+	Tree.insert(10);
+	Tree.insert(4);
+	Tree.insert(75);
+	Tree.insert(3);
 
-	// BinaryNode<int> *node3= new BinaryNode<int>;
-	// node3->addValue(34);
-
-	// BinaryNode<int> *node4= new BinaryNode<int>;
-	// node4->addValue(2);
-
-	// BinaryNode<int> *node5= new BinaryNode<int>;
-	// node5->addValue(10);
-
-
-	Tree.insert(node1);
-	delete node1;
-	// Tree.insert(key,node2);
-	// cout << node->key << endl;
+	cout << Tree.size() << endl;
 	return 0;
 }
