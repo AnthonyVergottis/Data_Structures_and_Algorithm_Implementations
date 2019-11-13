@@ -7,34 +7,23 @@
 
 using namespace std;
 
-
-
 template <typename T> 
 struct BinaryNode{
 	T key ;
-	BinaryNode<T> *parent;
 	BinaryNode<T> *right;
 	BinaryNode<T> *left;
 
-	BinaryNode(T data): key{data}, parent{nullptr}, left{nullptr}, right{nullptr}{}
+	BinaryNode(T data): key{data}, left{nullptr}, right{nullptr}{}
 
-	BinaryNode<T> & operator= ( const BinaryNode<T> & node){
-		key = node.key;
-		parent = node->parent;
-		left = node->left;
-		right = node->right;
-		return *this;
-	}
+	// BinaryNode<T> & operator= ( const BinaryNode<T> & node){
+	// 	key = node->key;
+	// 	left = node->left;
+	// 	right = node->right;
+	// 	return *this;
+	// }
 
 	
 };
-
-template <typename T> 
-ostream & operator<<(ostream &output,BinaryNode<T> *node ){
-	output << node->key << "  " << node->left << "  " << node->right;
-	return output;
-}
-
 
 
 template <typename T> 
@@ -43,6 +32,8 @@ class BinarySearchTree{
 		BinaryNode<T> *root;
 		int num_nodes = 0;
 		void insert(BinaryNode<T> *nodeTree, T data);
+		bool isBalanced(BinaryNode<T> *nodeTree);
+		int getHeight(BinaryNode<T> *nodeTree);
 	
 	public:
 		BinarySearchTree(){
@@ -60,36 +51,32 @@ class BinarySearchTree{
 		BinaryNode<T> * findMaximum();
 		BinaryNode<T> * findMinimum();
 
-		template <typename U> 
-		friend ostream & operator<<(ostream &output,const BinaryNode<U> * node );
+		bool isBalanced(){return isBalanced(root);}
+		int getHeight(){ return getHeight(root);}
+		bool find(T key) const;
+		bool empty() const{return(num_nodes == 0);}
+		int size() const {return num_nodes;}
 
-		bool empty() const{
-			return(num_nodes == 0);
-		}
-
-		int size() const {
-			return num_nodes;
-		}
-
-		void printTree();
+		void printTree() const;
 
 
 };
 
+template <typename T> BinaryNode<T> * BinarySearchTree<T>::getRoot() const{return root;}
 
 
-template <typename T> 
-BinaryNode<T> * BinarySearchTree<T>::getRoot() const{
-	return root;
-}
 
 template <typename T> 
 BinaryNode<T> * BinarySearchTree<T>::findMaximum(){
+	if(this->empty())
+	{
+		return nullptr;
+	}
+
 	BinaryNode<T> * max =  root;
 
-	if(root == nullptr) return nullptr;
+	
 
-	max = root;
 	T maxKey = root->key;
 	while(max->right != nullptr){
 		max = max->right;
@@ -101,19 +88,17 @@ BinaryNode<T> * BinarySearchTree<T>::findMaximum(){
 
 template <typename T> 
 BinaryNode<T> * BinarySearchTree<T>::findMinimum(){
+	if(this->empty())
+	{
+		return nullptr;
+	}
 	BinaryNode<T> * min = root;
 
-	min = root;
 
 	T minKey = root->key;
 	while(min->left != nullptr){
 		min = min->left;
-		
-		if(min->key < minKey){ 
-			minKey = min->key;
-		}
-		
-		
+		if(min->key < minKey) minKey = min->key;	
 	}
 	return min;
 }
@@ -121,7 +106,7 @@ BinaryNode<T> * BinarySearchTree<T>::findMinimum(){
 
 
 template <typename T> 
-void BinarySearchTree<T>::printTree(){
+void BinarySearchTree<T>::printTree() const{
 
 
 }
@@ -174,29 +159,61 @@ void BinarySearchTree<T>::insert(BinaryNode<T> *nodeTree, T data){
 	
 }
 
+template <typename T>
+bool BinarySearchTree<T>::find(T key) const{
+	
+}
+
+template <typename T>
+int BinarySearchTree<T>::getHeight(BinaryNode<T> *nodeTree){
+	if(!nodeTree){
+		return 0;
+	}
+	return 1 + max(getHeight(nodeTree->left), getHeight(nodeTree->right));
+}
+
+template <typename T>
+bool BinarySearchTree<T>::isBalanced(BinaryNode<T> *nodeTree){
+	if(!nodeTree){
+		return false;
+	}
+
+	int leftHeight = getHeight(nodeTree->left);
+	int rightHeight  = getHeight(nodeTree->right);
+
+	if(abs(leftHeight-rightHeight) > 1) return false;
+	return true;
+
+	
+}
+
 int main(int argc, char *argv[]){
 
 	BinarySearchTree<int> Tree;
-	
-	
-	
-	Tree.insert(999);
+	bool isTreeBalanced = false;
+
 	Tree.insert(555);
 	Tree.insert(795);
 	Tree.insert(10);
 	Tree.insert(67);
 	Tree.insert(4);
-	Tree.insert(56);
-	Tree.insert(456);
-	Tree.insert(78);
-	Tree.insert(1);
-	Tree.insert(78);
+	Tree.insert(444);
+	Tree.insert(4344);
+	Tree.insert(44542);
 
+	cout << "\nIs tree balaned: " << std::boolalpha << Tree.isBalanced() << endl;
+
+	BinaryNode<int> *rootNode = Tree.getRoot();
 	BinaryNode<int> *min = Tree.findMinimum();
 	BinaryNode<int> *max = Tree.findMaximum();
-	cout << "\nNumber of Nodes in Binary Search Tree: " << Tree.size() << endl;
-	cout << "Minimum Value: " << min->key << endl;
-	cout << "Maximum Value: " << max->key << endl;
 
+	if (min != nullptr && max != nullptr && rootNode != nullptr){
+		cout << "\nMinimum Value: " << min->key << endl;
+		cout << "Maximum Value: " << max->key << endl;
+		cout << "Root Value: " << rootNode->key << endl;
+	}
+	cout << "\nNumber of Nodes in Binary Search Tree: " << Tree.size() << endl;
+	cout << "Empty: " << std::boolalpha << Tree.empty() << endl;
+	cout << endl;
 	return 0;
 }
