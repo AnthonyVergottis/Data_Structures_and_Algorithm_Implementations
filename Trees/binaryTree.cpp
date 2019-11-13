@@ -180,7 +180,7 @@ int main(int argc, char *argv[]){
 	
 	
 	
-	
+	Tree.insert(999);
 	Tree.insert(555);
 	Tree.insert(795);
 	Tree.insert(10);
@@ -192,11 +192,11 @@ int main(int argc, char *argv[]){
 	Tree.insert(1);
 	Tree.insert(78);
 
-	// BinaryNode<int> *min = Tree.findMinimum();
-	// BinaryNode<int> *max = Tree.findMaximum();
-	cout << "\n Number of Nodes: " << Tree.size() << endl;
-	// cout << "Minimum Value: " << min->key << endl;
-	// cout << "Maximum Value: " << max->key << endl;
+	BinaryNode<int> *min = Tree.findMinimum();
+	BinaryNode<int> *max = Tree.findMaximum();
+	cout << "\nNumber of Nodes in Binary Search Tree: " << Tree.size() << endl;
+	cout << "Minimum Value: " << min->key << endl;
+	cout << "Maximum Value: " << max->key << endl;
 
 	return 0;
 }
