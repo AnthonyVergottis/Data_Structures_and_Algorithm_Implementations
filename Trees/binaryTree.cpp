@@ -35,6 +35,8 @@ class BinarySearchTree{
 		bool isBalanced(BinaryNode<T> *nodeTree);
 		int getHeight(BinaryNode<T> *nodeTree);
 		bool find(BinaryNode<T> *nodeTree , T data);
+		void remove(BinaryNode<T> *nodeTree ,T data);
+		BinaryNode<T> * getNode(BinaryNode<T> *nodeTree ,T key);
 	
 	public:
 		BinarySearchTree(){
@@ -44,13 +46,14 @@ class BinarySearchTree{
 		~BinarySearchTree(){}
 
 		
-		void insert(T key){
-			insert(root,key);
-		}
+		void insert(T key){ insert(root,key);}
+
+		void remove(T key){ remove(root,key);}
 
 		BinaryNode<T> * getRoot() const;
 		BinaryNode<T> * findMaximum() const;
 		BinaryNode<T> * findMinimum() const;
+		BinaryNode<T> * getNode(T key){ return getNode(root,key);}
 
 		bool isBalanced(){return isBalanced(root);}
 		int getHeight(){ return getHeight(root);}
@@ -152,6 +155,40 @@ void BinarySearchTree<T>::insert(BinaryNode<T> *nodeTree, T data){
 	
 }
 
+
+template <typename T>
+BinaryNode<T> * BinarySearchTree<T>::getNode(BinaryNode<T> *nodeTree,T key) {
+	bool found = true;
+	if(!nodeTree){
+		return nullptr;
+	}
+	if(key == nodeTree->key){
+		return nodeTree;
+	}
+
+	if(key < nodeTree->key){
+		if(find(nodeTree->left,key)){
+			return getNode(nodeTree->left,key);
+		}
+	}
+	else if (key > nodeTree->key){
+		if(find(nodeTree->right,key)){
+			return getNode(nodeTree->right,key);
+		}
+	}
+}
+
+template <typename T>
+void BinarySearchTree<T>::remove(BinaryNode<T> *nodeTree, T key) {
+	if(!nodeTree) return;
+
+	// BinaryNode<T> *tempNode = new BinaryNode<T>;
+	if(getNode(nodeTree,key)){
+		cout << "TESTss" << endl;
+	}
+	
+}
+
 template <typename T>
 bool BinarySearchTree<T>::find(BinaryNode<T> *nodeTree, T key) {
 	bool found = true;
@@ -205,12 +242,16 @@ int main(int argc, char *argv[]){
 	Tree.insert(444);
 	Tree.insert(4344);
 	Tree.insert(44542);
+	Tree.remove(44542);
 
 	int key = 44542;
 
 	cout << "\nIs tree balaned: " << std::boolalpha << Tree.isBalanced() << endl;
 	cout << "\nFound key: " << key  << std::boolalpha<< ",  " << Tree.find(key) << endl;
 
+
+	BinaryNode<int> *node = Tree.getNode(67);
+	cout << "\nGet a nodes value: " << node->key << endl;
 	BinaryNode<int> *rootNode = Tree.getRoot();
 	BinaryNode<int> *min = Tree.findMinimum();
 	BinaryNode<int> *max = Tree.findMaximum();
