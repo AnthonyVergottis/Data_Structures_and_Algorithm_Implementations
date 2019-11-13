@@ -1,4 +1,5 @@
 .vscode/
+.ipynb_checkpoints/
 # Unix swap file
 .swp
 .DS_Store
