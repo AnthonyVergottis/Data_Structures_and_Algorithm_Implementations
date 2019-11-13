@@ -22,6 +22,7 @@ template <typename T>
 class BinarySearchTree{
 	private:
 		BinaryNode<T> *root;
+		BinaryNode<T> *currentNode;
 		int num_nodes = 0;
 	
 	public:
@@ -69,40 +70,32 @@ template <typename T>
 void  BinarySearchTree<T>::insert(T key){
 
 	BinaryNode<T> *newNode = new BinaryNode<T>;
-	BinaryNode<T> *currentNode = new BinaryNode<T>;
-	
+
 	newNode->key = key;
 
 	if (this->empty()){
 		root = newNode;
 		++num_nodes;		
-		cout << root->key << endl;
+		currentNode = root;
 		return;
 	} else{
-		currentNode = root;
-		while(1){	
+		
+
+		while(1){
 			if(key < currentNode->key){
-				while(currentNode->left == nullptr){
-					currentNode->left = newNode;
-					newNode->parent = currentNode;
-					cout << "Added left" << endl;
-					
-				}
+				cout << currentNode->key << endl;
+				currentNode->left = newNode;
+				currentNode = currentNode->left;
 				++num_nodes;
 				return;
 			}else if(key > currentNode->key){
-				while(currentNode->right == nullptr){
-					currentNode->right = newNode;
-					newNode->parent = currentNode;
-					cout << "Added rigth" << endl;
-				
-				}
+				cout << currentNode->key << endl;
+				currentNode->right = newNode;
+				currentNode = currentNode->right;
 				++num_nodes;
 				return;
 			}
 		}
-
-
 
 	}
 
