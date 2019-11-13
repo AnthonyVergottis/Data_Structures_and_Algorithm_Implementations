@@ -10,10 +10,11 @@ using namespace std;
 template <typename T> 
 struct BinaryNode{
 	T key ;
+	BinaryNode<T> *parent;
 	BinaryNode<T> *right;
 	BinaryNode<T> *left;
 
-	BinaryNode(T data): key{data}, left{nullptr}, right{nullptr}{}
+	BinaryNode(T data): key{data}, parent{nullptr}, left{nullptr}, right{nullptr}{}
 
 	// BinaryNode<T> & operator= ( const BinaryNode<T> & node){
 	// 	key = node->key;
@@ -128,6 +129,7 @@ void BinarySearchTree<T>::insert(BinaryNode<T> *nodeTree, T data){
 				++num_nodes;
 				BinaryNode<T> *newNode = new BinaryNode<T>(data);
 				nodeTree->left = newNode;
+				newNode->parent = nodeTree;
 				// delete newNode;
 				
 			}
@@ -143,6 +145,7 @@ void BinarySearchTree<T>::insert(BinaryNode<T> *nodeTree, T data){
 				++num_nodes;
 				BinaryNode<T> *newNode = new BinaryNode<T>(data);
 				nodeTree->right = newNode;
+				newNode->parent = nodeTree;
 				// delete newNode;	
 			}
 			else
@@ -182,9 +185,16 @@ template <typename T>
 void BinarySearchTree<T>::remove(BinaryNode<T> *nodeTree, T key) {
 	if(!nodeTree) return;
 
-	// BinaryNode<T> *tempNode = new BinaryNode<T>;
-	if(getNode(nodeTree,key)){
-		cout << "TESTss" << endl;
+	BinaryNode<T> *tempNode = getNode(nodeTree,key);
+
+	if(tempNode){
+		cout << "\n\nCONTINUE HERE! - LINE: " << __LINE__ << "\n\n" << endl;
+		cout << tempNode->parent->key << endl;
+
+		// if(key < tempNode->parent->key){
+		// 	tempNode->parent->right = nodeTree->right;
+		// 	tempNode->parent->left =nodeTree->left;
+		// }	
 	}
 	
 }
