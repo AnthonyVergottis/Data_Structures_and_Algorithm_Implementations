@@ -109,15 +109,12 @@ void printList(Link *p){
 
 int main(){
 
-    Link * norse_gods = new Link{"Thor"};
-    norse_gods = insert(norse_gods,new Link{"Odin"});
-    norse_gods = insert(norse_gods,new Link{"Fria"});
-    norse_gods = insert(norse_gods,new Link{"Loki"});
+    Link * item = new Link{"David"};
+    item = insert(item,new Link{"Anthony"});
+    item = insert(item,new Link{"Iioannis"});
+    item = insert(item,new Link{"Mika"});
 
-
-    // Link *p = find(norse_gods, "Thor");
-
-    printList(norse_gods);
+    printList(item);
 
     return 0;
 }
